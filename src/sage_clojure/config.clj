@@ -62,11 +62,13 @@
   if unspecified) when unset everywhere."
   ([key] (get-config key nil))
   ([key default]
+   ;; §11 (spec v3+): dotenv SHADOWS the shell env (the reference's intentional,
+   ;; if unconventional, behavior) — dotenv entries checked BEFORE getenv.
    (let [env (dotenv)]
-     (or (getenv (str "SAGE_" key))
-         (getenv key)
-         (get env (str "SAGE_" key))
+     (or (get env (str "SAGE_" key))
          (get env key)
+         (getenv (str "SAGE_" key))
+         (getenv key)
          default))))
 
 (defn flag?
