@@ -1,4 +1,4 @@
-# sajure-v2 — GNU Makefile (use gmake; BSD make mis-parses this).
+# sajure — GNU Makefile (use gmake; BSD make mis-parses this).
 # Clojure 1.12 CLI (clj). JSON is hand-rolled; test.check via deps.edn :test.
 
 CLJ ?= clj
