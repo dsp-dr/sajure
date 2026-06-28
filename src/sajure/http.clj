@@ -1,4 +1,4 @@
-(ns sage-clojure.http
+(ns sajure.http
   "§8 HTTP transport & resilience.
 
   All HTTP shells out to curl with --connect-timeout 5. The startup model probe
@@ -8,7 +8,7 @@
   costs a full connect-timeout for no gain)."
   (:require [clojure.java.shell :as shell]
             [clojure.string :as str]
-            [sage-clojure.config :as config]))
+            [sajure.config :as config]))
 
 (def ^:const connect-timeout-secs 5)
 

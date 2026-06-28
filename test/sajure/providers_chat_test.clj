@@ -1,11 +1,11 @@
-(ns sage-clojure.providers-chat-test
+(ns sajure.providers-chat-test
   "§2 provider chat layer — response NORMALIZATION + projection (the pure parts;
   no live LLM). Bodies are parsed with the real json reader so the null sentinel
   / number coercion behave exactly as on the wire."
   (:require [clojure.test :refer [deftest is testing]]
-            [sage-clojure.json :as json]
-            [sage-clojure.providers :as p]
-            [sage-clojure.tools :as tools]))
+            [sajure.json :as json]
+            [sajure.providers :as p]
+            [sajure.tools :as tools]))
 
 (deftest normalize-ollama-shape
   (let [body (str "{\"message\":{\"role\":\"assistant\",\"content\":\"hi\","

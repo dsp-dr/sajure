@@ -2,6 +2,6 @@
   "database": "dolt",
   "backend": "dolt",
   "dolt_mode": "embedded",
-  "dolt_database": "sage_clojure_v2",
+  "dolt_database": "sajure_v2",
   "project_id": "e2fc8ac4-d89e-498a-9e45-16bbccd9b403"
 }

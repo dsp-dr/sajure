@@ -1,4 +1,4 @@
-(ns sage-clojure.config
+(ns sajure.config
   "§11 Config precedence + XDG dirs.
 
   Precedence (highest first):  SAGE_<KEY> env  ->  <KEY> env  ->  dotenv

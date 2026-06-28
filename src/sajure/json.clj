@@ -1,4 +1,4 @@
-(ns sage-clojure.json
+(ns sajure.json
   "Hand-rolled JSON reader/writer — NO clojure.data.json, NO third-party dep.
 
   Data model (see README 'spec ambiguities'):

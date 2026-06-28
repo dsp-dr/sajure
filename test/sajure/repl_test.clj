@@ -1,13 +1,13 @@
-(ns sage-clojure.repl-test
+(ns sajure.repl-test
   "§5 agent loop + slash-command dispatch. The provider is MOCKED (an injected
   chat-fn) — we test the loop/wiring + the taint wrap on the own-LLM path, not
   the network."
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.string :as str]
-            [sage-clojure.repl :as repl]
-            [sage-clojure.session :as s]
-            [sage-clojure.taint :as taint]
-            [sage-clojure.tools :as tools]))
+            [sajure.repl :as repl]
+            [sajure.session :as s]
+            [sajure.taint :as taint]
+            [sajure.tools :as tools]))
 
 (def reg tools/default-registry)
 

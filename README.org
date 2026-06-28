@@ -1,4 +1,4 @@
-#+TITLE: sage-clojure
+#+TITLE: sajure
 #+AUTHOR: dsp-dr
 #+VERSION: v2
 #+STATUS: second reference implementation — feature parity with guile-sage
@@ -10,7 +10,7 @@ agent surface (REPL loop, sessions, context/compaction, MCP client + server).
 
 Truth sources: [[file:spec.org][spec.org]] (the v2 contract) and, authoritative where they differ,
 guile-sage's =spec.org= §1–§11 + =src/sage/*.scm=. JSON is *hand-rolled*
-(=src/sage_clojure/json.clj=) — =clojure.data.json= is NOT used. HTTP shells out
+(=src/sajure/json.clj=) — =clojure.data.json= is NOT used. HTTP shells out
 to =curl=. Runs on the *Clojure 1.12 CLI* (=clj=); the only third-party dep is
 =org.clojure/test.check=.
 
@@ -27,9 +27,9 @@ gmake mcp-server    # serve the tool registry over stdio JSON-RPC 2.0
 Direct =clj= invocations:
 #+begin_src sh
 clj -M:test                       # tests
-clj -M -m sage-clojure.repl       # interactive REPL
-clj -M -m sage-clojure.repl -p "summarize foo.clj"   # one-shot
-clj -M -m sage-clojure.repl mcp-server               # MCP server (stdio)
+clj -M -m sajure.repl       # interactive REPL
+clj -M -m sajure.repl -p "summarize foo.clj"   # one-shot
+clj -M -m sajure.repl mcp-server               # MCP server (stdio)
 clj -M:mcp-server                 # MCP server (alias)
 #+end_src
 
@@ -95,7 +95,7 @@ Provider via env (precedence =SAGE_<K>= → =<K>= → dotenv → default):
   =mcp-server/dispatch=.
 
 * Tests
-=clj -M:test= runs a custom runner (=test/sage_clojure/runner.clj=) that
+=clj -M:test= runs a custom runner (=test/sajure/runner.clj=) that
 *propagates failures* (=System/exit 1= on any fail/error — no masked greens),
 using =org.clojure/test.check= for properties alongside example-based cases.
 

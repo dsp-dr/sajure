@@ -1,10 +1,10 @@
-(ns sage-clojure.tools-test
+(ns sajure.tools-test
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.string :as str]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
-            [sage-clojure.tools :as tools]))
+            [sajure.tools :as tools]))
 
 (def nul (str (char 0)))
 

@@ -1,13 +1,13 @@
-(ns sage-clojure.mcp-client-test
+(ns sajure.mcp-client-test
   "§4 MCP client — discovery parsing, JSON-RPC framing, tool registration, and a
   client<->server interop check driven through our own mcp-server/dispatch (no
   subprocess, no network)."
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.string :as str]
-            [sage-clojure.json :as json]
-            [sage-clojure.mcp-client :as mc]
-            [sage-clojure.mcp-server :as srv]
-            [sage-clojure.tools :as tools]))
+            [sajure.json :as json]
+            [sajure.mcp-client :as mc]
+            [sajure.mcp-server :as srv]
+            [sajure.tools :as tools]))
 
 ;;; --- discovery parsing -----------------------------------------------------
 (def sample-config

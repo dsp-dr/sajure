@@ -1,4 +1,4 @@
-(ns sage-clojure.tools
+(ns sajure.tools
   "§3 Tool system: path containment (safe-path?), the permission model
   (safe/unsafe + YOLO), and an IMMUTABLE tool registry.
 
@@ -8,7 +8,7 @@
   :exec is a function held as a value. Lookups are pure; there is no global
   mutable state. Callers thread the registry explicitly (the mcp-server does)."
   (:require [clojure.string :as str]
-            [sage-clojure.config :as config]))
+            [sajure.config :as config]))
 
 ;;; ---------------------------------------------------------------------------
 ;;; §3 Path containment — safe-path? MUST be TOTAL (never throws).
@@ -117,7 +117,7 @@
               :safe true)
    (make-tool "whoami" "Report the agent identity."
               {"type" "object" "properties" {}}
-              (fn [_] "sage-clojure v2")
+              (fn [_] "sajure v2")
               :safe true)
    (make-tool "read_file" "Read a workspace file (path-contained)."
               {"type" "object"

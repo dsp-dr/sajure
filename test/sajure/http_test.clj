@@ -1,6 +1,6 @@
-(ns sage-clojure.http-test
+(ns sajure.http-test
   (:require [clojure.test :refer [deftest is testing]]
-            [sage-clojure.http :as http]))
+            [sajure.http :as http]))
 
 (deftest retry-set
   (testing "retry set is 408/429/5xx ONLY"

@@ -1,4 +1,4 @@
-(ns sage-clojure.session
+(ns sajure.session
   "§6 Sessions, memory & context management — mirrors session.scm / context.scm
   / compaction.scm.
 
@@ -16,8 +16,8 @@
   directly property-testable without touching disk."
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [sage-clojure.config :as config]
-            [sage-clojure.json :as json]))
+            [sajure.config :as config]
+            [sajure.json :as json]))
 
 ;;; ---------------------------------------------------------------------------
 ;;; Token estimation

@@ -1,10 +1,10 @@
-(ns sage-clojure.providers-test
+(ns sajure.providers-test
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.string :as str]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
-            [sage-clojure.providers :as p]))
+            [sajure.providers :as p]))
 
 (def gen-code (gen/elements [0 400 401 403 404 408 429 500 502 503 418]))
 (def gen-provider (gen/elements ["ollama" "gemini" "openai"]))

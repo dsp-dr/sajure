@@ -1,4 +1,4 @@
-;;; Directory Local Variables — CIDER/nREPL for sage-clojure
+;;; Directory Local Variables — CIDER/nREPL for sajure
 ;;; cider-jack-in uses the :repl alias (nrepl + cider-nrepl + rebel-readline).
 ;;; Time-travel: launch `clojure -M:flowstorm:repl` and M-x cider-connect.
 ((clojure-mode

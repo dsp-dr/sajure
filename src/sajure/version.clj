@@ -1,5 +1,5 @@
-(ns sage-clojure.version
-  "Version information for the sage-clojure port.
+(ns sajure.version
+  "Version information for the sajure port.
 
   Spec v2: the port string is the literal \"v2\" (NOT the reference impl's
   semantic 1.1.0). See README.org and spec.org header (#+VERSION).")
@@ -16,6 +16,6 @@
 (defn version-info
   "Structured version info for serverInfo / diagnostics."
   []
-  {"name"    "sage-clojure"
+  {"name"    "sajure"
    "version" version
    "spec"    "v2"})

@@ -1,13 +1,13 @@
-(ns sage-clojure.mcp-test
+(ns sajure.mcp-test
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.string :as str]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
-            [sage-clojure.json :as json]
-            [sage-clojure.mcp-server :as mcp]
-            [sage-clojure.tools :as tools]
-            [sage-clojure.version :as version]))
+            [sajure.json :as json]
+            [sajure.mcp-server :as mcp]
+            [sajure.tools :as tools]
+            [sajure.version :as version]))
 
 (def reg tools/default-registry)
 

@@ -1,9 +1,9 @@
-(ns sage-clojure.session-test
+(ns sajure.session-test
   "§6 sessions, context thresholds, compaction. Pure transforms tested directly;
   persistence tested through a redirected sessions-dir (no real XDG writes)."
   (:require [clojure.test :refer [deftest is testing]]
-            [sage-clojure.config :as config]
-            [sage-clojure.session :as s]))
+            [sajure.config :as config]
+            [sajure.session :as s]))
 
 ;;; --- token estimation ------------------------------------------------------
 (deftest token-estimate

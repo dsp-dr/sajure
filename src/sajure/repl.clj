@@ -1,4 +1,4 @@
-(ns sage-clojure.repl
+(ns sajure.repl
   "§5 Agent loop & REPL — mirrors repl.scm.
 
   The interactive loop: read prompt -> provider chat (streaming or not) ->
@@ -16,13 +16,13 @@
   loop/wiring is tested with a mock provider — no live LLM. Slash-command
   dispatch (handle-command) is a pure-ish function returning a result map."
   (:require [clojure.string :as str]
-            [sage-clojure.config :as config]
-            [sage-clojure.providers :as providers]
-            [sage-clojure.session :as session]
-            [sage-clojure.taint :as taint]
-            [sage-clojure.tools :as tools]
-            [sage-clojure.mcp-client :as mcp-client]
-            [sage-clojure.version :as version])
+            [sajure.config :as config]
+            [sajure.providers :as providers]
+            [sajure.session :as session]
+            [sajure.taint :as taint]
+            [sajure.tools :as tools]
+            [sajure.mcp-client :as mcp-client]
+            [sajure.version :as version])
   (:gen-class))
 
 ;;; ---------------------------------------------------------------------------
@@ -143,7 +143,7 @@
         ret (fn [m] (merge {:handled? true :session session :exit? false :output ""} m))]
     (case cmd
       "/help"     (ret {:output help-text})
-      "/version"  (ret {:output (str "sage-clojure " (version/version-string))})
+      "/version"  (ret {:output (str "sajure " (version/version-string))})
       "/tools"    (ret {:output (tool-listing registry)})
       ("/exit" "/quit") (ret {:exit? true :output "Bye."})
       ("/reset" "/clear")
@@ -235,7 +235,7 @@
         provider (providers/current-provider)]
     (session/create! {:model (providers/provider-model provider)})
     (session/add-message! "system" taint/tool-result-system-prompt)
-    (println (format "sage-clojure %s — provider: %s, model: %s"
+    (println (format "sajure %s — provider: %s, model: %s"
                      (version/version-string) (name provider)
                      (get @session/session-atom "model")))
     (println "Type /help for commands, /exit to quit.")
@@ -270,7 +270,7 @@
   [& args]
   (cond
     (= (first args) "mcp-server")
-    ((requiring-resolve 'sage-clojure.mcp-server/-main))
+    ((requiring-resolve 'sajure.mcp-server/-main))
     (#{"-p" "--print"} (first args))
     (one-shot (str/join " " (rest args)))
     :else (run)))

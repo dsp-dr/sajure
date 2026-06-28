@@ -1,4 +1,4 @@
-(ns sage-clojure.mcp-client
+(ns sajure.mcp-client
   "§4 MCP CLIENT — mirrors mcp.scm.
 
   Discovers MCP servers from ~/.claude.json, performs the JSON-RPC handshake,
@@ -18,8 +18,8 @@
   server."
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [sage-clojure.json :as json]
-            [sage-clojure.tools :as tools]))
+            [sajure.json :as json]
+            [sajure.tools :as tools]))
 
 ;;; ---------------------------------------------------------------------------
 ;;; Discovery (pure)
@@ -134,7 +134,7 @@
   (let [{:keys [id line]} (rpc-request "initialize"
                                        {"protocolVersion" "2025-06-18"
                                         "capabilities" {}
-                                        "clientInfo" {"name" "sage-clojure" "version" "v2"}})]
+                                        "clientInfo" {"name" "sajure" "version" "v2"}})]
     (send-line! conn line)
     (let [reply (read-reply conn id)]
       (send-line! conn (rpc-notification "notifications/initialized" {}))

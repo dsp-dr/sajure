@@ -1,4 +1,4 @@
-(ns sage-clojure.providers
+(ns sajure.providers
   "§2 Provider error normalization.
 
   Every non-200 collapses to ONE clean single-line assistant message:
@@ -17,9 +17,9 @@
   (code 0 is classified transient but the retry SET excludes it — fast-fail.)"
   (:require [clojure.string :as str]
             [clojure.java.io :as io]
-            [sage-clojure.config :as config]
-            [sage-clojure.http :as http]
-            [sage-clojure.json :as json]))
+            [sajure.config :as config]
+            [sajure.http :as http]
+            [sajure.json :as json]))
 
 (def ^:const error-message-max-bytes
   "Excerpt cap in BYTES (UTF-8), per the authoritative spec." 200)
@@ -100,7 +100,7 @@
 ;;; ===========================================================================
 ;;; §2 Provider chat transport + response normalization (mirrors guile-sage
 ;;; provider.scm / ollama.scm / gemini.scm / openai.scm). All HTTP shells to
-;;; curl via sage-clojure.http (the spec's transport note); non-200 collapses
+;;; curl via sajure.http (the spec's transport note); non-200 collapses
 ;;; through error-line. Pure parsing (normalize-* / *->function-defs) is split
 ;;; from the IO (chat / chat-streaming / list-models) so it stays testable.
 ;;;

@@ -1,9 +1,9 @@
-(ns sage-clojure.json-test
+(ns sajure.json-test
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
-            [sage-clojure.json :as json]))
+            [sajure.json :as json]))
 
 (def gen-scalar
   (gen/one-of

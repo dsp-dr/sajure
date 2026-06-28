@@ -1,10 +1,10 @@
-(ns sage-clojure.taint-test
+(ns sajure.taint-test
   (:require [clojure.test :refer [deftest is testing]]
             [clojure.string :as str]
             [clojure.test.check.clojure-test :refer [defspec]]
             [clojure.test.check.generators :as gen]
             [clojure.test.check.properties :as prop]
-            [sage-clojure.taint :as taint]))
+            [sajure.taint :as taint]))
 
 ;; Strings that frequently contain CDATA breakout sequences.
 (def gen-tricky

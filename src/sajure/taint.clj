@@ -1,4 +1,4 @@
-(ns sage-clojure.taint
+(ns sajure.taint
   "§7 Guardrails & the taint boundary + the trust lattice.
 
   THE single choke point: every tool result on sage's OWN-LLM path passes

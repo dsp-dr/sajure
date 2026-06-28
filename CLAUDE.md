@@ -1,4 +1,4 @@
-# CLAUDE.md — sage-clojure-v2 continuation guide
+# CLAUDE.md — sajure-v2 continuation guide
 
 Cold-start guide for an agent picking up the **second reference implementation**
 of sage (feature parity with guile-sage). Read this + `spec.org` before editing.
@@ -18,15 +18,15 @@ gmake mcp-server    # serve tool registry over stdio newline-JSON-RPC 2.0
 Direct invocations:
 ```sh
 clj -M:test                                    # tests (runner -> System/exit)
-clj -M -m sage-clojure.repl                     # REPL
-clj -M -m sage-clojure.repl -p "prompt"         # one-shot
-clj -M -m sage-clojure.repl mcp-server          # MCP server subcommand
+clj -M -m sajure.repl                     # REPL
+clj -M -m sajure.repl -p "prompt"         # one-shot
+clj -M -m sajure.repl mcp-server          # MCP server subcommand
 clj -M:mcp-server                               # MCP server (alias)
 ```
 
 Deps: only `org.clojure/test.check` (in `deps.edn` `:test` alias). JSON is
-hand-rolled (`src/sage_clojure/json.clj`) — do **not** add `clojure.data.json`.
-Test runner = `test/sage_clojure/runner.clj`; add new test namespaces there
+hand-rolled (`src/sajure/json.clj`) — do **not** add `clojure.data.json`.
+Test runner = `test/sajure/runner.clj`; add new test namespaces there
 (both the `:require` and `test-namespaces`) or they won't run.
 
 Current state: **65 tests / 274 assertions, 0 failures**. Property generators run
@@ -61,8 +61,8 @@ differs from local `spec.org` = **guile-sage/spec.org §1–§11 + src/sage/*.sc
 
 - **gmake, not make**; **clj, not lein/boot**. Working dir resets between bash
   calls in this harness — use absolute paths.
-- The repo lives at `…/sage-clojure-v2` (hyphen). Namespaces use `sage-clojure.*`;
-  files use `sage_clojure/*.clj` (underscore — Clojure munging).
+- The repo lives at `…/sajure-v2` (hyphen). Namespaces use `sajure.*`;
+  files use `sajure/*.clj` (underscore — Clojure munging).
 - `clojure.core/reset!` collision: an atom-mutating session fn named `reset!`
   shadows core and breaks every later `(reset! atom …)`. The stateful clear is
   `session/reset-conversation!`. Don't reintroduce a `reset!` defn.
@@ -170,7 +170,7 @@ This protocol applies when ending a Beads implementation workflow. It is subordi
 
 ## Build-team continuation guide
 
-# CLAUDE.md — sage-clojure-v2 continuation guide
+# CLAUDE.md — sajure-v2 continuation guide
 
 Cold-start guide for an agent picking up the **second reference implementation**
 of sage (feature parity with guile-sage). Read this + `spec.org` before editing.
@@ -190,15 +190,15 @@ gmake mcp-server    # serve tool registry over stdio newline-JSON-RPC 2.0
 Direct invocations:
 ```sh
 clj -M:test                                    # tests (runner -> System/exit)
-clj -M -m sage-clojure.repl                     # REPL
-clj -M -m sage-clojure.repl -p "prompt"         # one-shot
-clj -M -m sage-clojure.repl mcp-server          # MCP server subcommand
+clj -M -m sajure.repl                     # REPL
+clj -M -m sajure.repl -p "prompt"         # one-shot
+clj -M -m sajure.repl mcp-server          # MCP server subcommand
 clj -M:mcp-server                               # MCP server (alias)
 ```
 
 Deps: only `org.clojure/test.check` (in `deps.edn` `:test` alias). JSON is
-hand-rolled (`src/sage_clojure/json.clj`) — do **not** add `clojure.data.json`.
-Test runner = `test/sage_clojure/runner.clj`; add new test namespaces there
+hand-rolled (`src/sajure/json.clj`) — do **not** add `clojure.data.json`.
+Test runner = `test/sajure/runner.clj`; add new test namespaces there
 (both the `:require` and `test-namespaces`) or they won't run.
 
 Current state: **65 tests / 274 assertions, 0 failures**. Property generators run
@@ -233,8 +233,8 @@ differs from local `spec.org` = **guile-sage/spec.org §1–§11 + src/sage/*.sc
 
 - **gmake, not make**; **clj, not lein/boot**. Working dir resets between bash
   calls in this harness — use absolute paths.
-- The repo lives at `…/sage-clojure-v2` (hyphen). Namespaces use `sage-clojure.*`;
-  files use `sage_clojure/*.clj` (underscore — Clojure munging).
+- The repo lives at `…/sajure-v2` (hyphen). Namespaces use `sajure.*`;
+  files use `sajure/*.clj` (underscore — Clojure munging).
 - `clojure.core/reset!` collision: an atom-mutating session fn named `reset!`
   shadows core and breaks every later `(reset! atom …)`. The stateful clear is
   `session/reset-conversation!`. Don't reintroduce a `reset!` defn.
