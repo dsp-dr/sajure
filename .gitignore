@@ -1,6 +1,7 @@
 .cpcache/
 target/
 .env
+.logs/
 *.class
 .nrepl-port
 .lsp/
