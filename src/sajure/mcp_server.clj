@@ -25,6 +25,7 @@
   The handler core (handle-line / dispatch) is pure of IO and takes the
   registry + expose? explicitly, so it is directly property-testable."
   (:require [clojure.string :as str]
+            [sajure.attest :as attest]
             [sajure.json :as json]
             [sajure.tools :as tools]
             [sajure.version :as version])
@@ -79,25 +80,66 @@
 (defn on-tools-list [id registry expose?]
   (reply id {"tools" (exposed-schema registry expose?)}))
 
+;;; §17.5 — Path B (MCP peer) attestation is OFF-WIRE ONLY. It goes to the audit
+;;; log / stderr; it MUST NOT alter the wire response, so the no-oracle refusal
+;;; stays byte-identical (property #9) and served results stay plain. Per
+;;; RFC-004 F2, Path B's authorization gate is EXPOSURE (SAGE_MCP_EXPOSE_UNSAFE),
+;;; NOT YOLO — the verdict reason reflects that. Path B is ALWAYS best-effort
+;;; (:strict? false), so attestation never breaks the wire path.
+
+(defn- path-b-env [expose?]
+  {"SAGE_MCP_EXPOSE_UNSAFE" (if expose? "1" "")})
+
+(defn- attest-path-b!
+  "Off-wire attestation for a Path B call. RESULT is the served (raw, plain)
+  text for an executed mutation, or nil for a refusal / non-mutation. Never
+  throws; returns nil."
+  [name args tool expose? mutating? result]
+  (try
+    (let [mc (cond mutating? "mutating"
+                   (and tool (:safe tool)) "read-only"
+                   :else "unclassified")
+          action (attest/canonical-action (or name "") args
+                                          :actor "mcp-peer"
+                                          :mutation-class mc
+                                          :safe-path? tools/safe-path?)
+          verdict (attest/policy-verdict action (path-b-env expose?)
+                                         :auth-key "SAGE_MCP_EXPOSE_UNSAFE"
+                                         :auth-label "SAGE_MCP_EXPOSE_UNSAFE (exposure)")
+          allow? (= :allow (attest/verdict-decision verdict))]
+      (attest/attest! action verdict
+                      :actor "mcp-peer"
+                      :strict? false
+                      :result-sha (when (and allow? result) (attest/sha256-hex result))))
+    (catch Throwable _ nil))
+  nil)
+
 (defn on-tools-call [id params registry expose?]
   (let [name (get params "name")
         args (let [a (get params "arguments")] (if (map? a) a {}))
-        tool (and name (tools/find-tool registry name))]
-    (if (or (nil? tool) (not (tool-exposed? registry expose? name)))
+        tool (and name (tools/find-tool registry name))
+        exposed? (tool-exposed? registry expose? name)
+        mutating? (boolean (and tool (not (:safe tool))))]
+    (if (or (nil? tool) (not exposed?))
       ;; NO ORACLE: unknown AND unexposed -> IDENTICAL response. The hint that a
       ;; gated tool exists goes to stderr for the operator only.
       (do
-        (when (and tool (not (tool-exposed? registry expose? name)))
+        (when (and tool (not exposed?))
           (log! "   (refused unexposed unsafe tool: %s — set SAGE_MCP_EXPOSE_UNSAFE=1)%n" name))
         (when (and name (nil? tool))
           (log! "   (unknown tool requested: %s)%n" name))
-        ;; NAME-FREE: never echo `name` into the wire message.
+        ;; §17.5: OFF-WIRE deny record for BOTH unknown and gated (property #9);
+        ;; NEVER echo `name` into the wire message.
+        (attest-path-b! name args tool expose? mutating? nil)
         (reply-error id -32601 unknown-tool-message))
       (try
-        (let [result ((:exec tool) args)]
+        (let [result ((:exec tool) args)
+              text (if (string? result) result (str result))]
+          ;; §17.4/§17.5: attest executed mutations OFF-WIRE (result-sha over the
+          ;; raw served bytes — Path B has no taint envelope, so raw == served).
+          (when mutating? (attest-path-b! name args tool expose? mutating? text))
           ;; Served result is PLAIN content (no §7 taint envelope).
-          (reply id {"content" [{"type" "text"
-                                 "text" (if (string? result) result (str result))}]}))
+          (reply id {"content" [{"type" "text" "text" text}]}))
         (catch Throwable t
           (reply-error id -32603 (str "Tool error: " (.getMessage t))))))))
 
