@@ -11,7 +11,8 @@
             [sajure.mcp-test]
             [sajure.mcp-client-test]
             [sajure.session-test]
-            [sajure.repl-test]))
+            [sajure.repl-test]
+            [sajure.attest-test]))
 
 (def test-namespaces
   '[sajure.json-test
@@ -23,7 +24,8 @@
     sajure.mcp-test
     sajure.mcp-client-test
     sajure.session-test
-    sajure.repl-test])
+    sajure.repl-test
+    sajure.attest-test])
 
 (defn -main [& _]
   (let [summary (apply t/run-tests test-namespaces)
