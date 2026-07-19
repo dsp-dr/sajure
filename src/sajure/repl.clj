@@ -16,6 +16,7 @@
   loop/wiring is tested with a mock provider — no live LLM. Slash-command
   dispatch (handle-command) is a pure-ish function returning a result map."
   (:require [clojure.string :as str]
+            [sajure.attest :as attest]
             [sajure.config :as config]
             [sajure.providers :as providers]
             [sajure.session :as session]
@@ -39,20 +40,41 @@
 (defn execute-one-tool
   "Run ONE tool-call {:name :arguments} against REGISTRY under YOLO?. Returns
   the §7 taint-WRAPPED result string (own-LLM path). Unknown tool / permission
-  denied / thrown exec all collapse to a guard-wrapped error — never throws."
+  denied / thrown exec all collapse to a guard-wrapped error — never throws.
+
+  §17.4 (Path A, actor own-llm): a MUTATING tool emits exactly one attestation
+  record — allow ⇒ result-sha over the PRE-taint-wrap `guarded` bytes (NOT the
+  CDATA envelope, property #6); deny ⇒ no result-sha and the exec never ran
+  (property #3). Safe (read-only) tools are exempt (property #10). The execution
+  gate is unchanged (tools/allowed?, defense in depth); the verdict mirrors it,
+  so threading attestation in changes no behavior."
   [registry yolo? {:keys [name arguments]}]
   (let [tool (tools/find-tool registry name)
+        args (or arguments {})
+        mutating? (and tool (not (:safe tool)))
+        allowed? (and tool (tools/allowed? tool yolo?))
         raw (cond
               (nil? tool)
               (str "[error] Unknown tool: " name)
-              (not (tools/allowed? tool yolo?))
+              (not allowed?)
               (str "[error] Permission denied: " name
                    " is unsafe (requires confirmation or SAGE_YOLO_MODE=1)")
               :else
-              (try (let [r ((:exec tool) (or arguments {}))]
+              (try (let [r ((:exec tool) args)]
                      (if (string? r) r (str r)))
                    (catch Throwable t (str "[error] Tool error: " (.getMessage t)))))
         guarded (taint/guard-tool-result raw)]
+    ;; §17.4: attest MUTATING tools only (safe tools exempt).
+    (when mutating?
+      (let [action (attest/canonical-action name args
+                                            :actor "own-llm"
+                                            :mutation-class "mutating"
+                                            :safe-path? tools/safe-path?)
+            verdict (attest/policy-verdict action {"YOLO_MODE" (if yolo? "1" "")})
+            allow? (= :allow (attest/verdict-decision verdict))]
+        (attest/attest! action verdict
+                        :actor "own-llm"
+                        :result-sha (when allow? (attest/sha256-hex guarded)))))
     (taint/wrap-tool-result name guarded (boolean (and tool (:safe tool))))))
 
 (defn run-turn
